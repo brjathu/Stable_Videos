@@ -2,12 +2,14 @@ import sys
 import torch
 import numpy as np
 # import gradio as gr
+import cv2
 from PIL import Image
 from omegaconf import OmegaConf
 from einops import repeat, rearrange
-# from pytorch_lightning import seed_everything
+from pytorch_lightning import seed_everything
+import os
 from imwatermark import WatermarkEncoder
-
+import imgviz
 from stablediffusion.scripts.txt2img import put_watermark
 from stablediffusion.ldm.util import instantiate_from_config
 from stablediffusion.ldm.models.diffusion.ddim import DDIMSampler
@@ -45,7 +47,7 @@ def paint(sampler, image, prompt, t_enc, seed, scale, num_samples=1, callback=No
     device = torch.device(
         "cuda") if torch.cuda.is_available() else torch.device("cpu")
     model = sampler.model
-    # seed_everything(seed)
+    seed_everything(seed)
 
     print("Creating invisible watermark encoder (see https://github.com/ShieldMnt/invisible-watermark)...")
     wm = "SDV2"
@@ -157,15 +159,30 @@ os.makedirs(".out", exist_ok=True)
 
 sampler = initialize_model(sys.argv[1], sys.argv[2])
 
-input_image = Image.open("assets/test1.jpg")
-prompt = "A high resolution photo of a man"
+
+prompt = "A high resolution photo of a woman with a red dress and a black hat."
 ddim_steps = 50
 num_samples = 1
-scale = 9.0
+scale = 5.0
 seed = 42
 eta = 0.0
 strength = 0.9
 
-result = predict(input_image, prompt, ddim_steps, num_samples, scale, seed, eta, strength)
-result[0].save("out/depth.jpg")
-result[1].save("out/img.jpg")
+video_path = "assets/videos/youtube_run_000/img/"
+save_path = "out/v0_test1.mp4"
+list_of_frames = np.sort([i for i in os.listdir(video_path) if ".jpg" in i])
+for fid, fname in enumerate(list_of_frames):
+    input_image = Image.open(video_path + fname)
+    result = predict(input_image, prompt, ddim_steps, num_samples, scale, seed, eta, strength)
+    # import ipdb; ipdb.set_trace()
+    output_image = imgviz.tile([np.array(input_image.resize(result[1].size)), np.array(result[0].resize(result[1].size)), np.array(result[1])], shape=(1, 3), border=(255, 255, 255))
+    output_image = output_image[:, :, ::-1]
+    if(fid==0):
+        video_file = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), 30, frameSize=(output_image.shape[1],output_image.shape[0]))
+    video_file.write(output_image)
+video_file.release()
+
+# result[0].save("out/depth.jpg")
+# result[1].save("out/img.jpg")
+
+
