@@ -10,6 +10,8 @@ __pycache__/
 _BACKUP/
 out/
 imagic_stable_diffusion/
+weights/
+stablediffusion/
 
 # Distribution / packaging
 .Python
