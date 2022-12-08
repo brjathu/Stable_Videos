@@ -25,3 +25,7 @@
 
 point to correct midas path
 <!-- /home/jathu/Diffusion/Stable_Videos/stablediffusion/ldm/modules/midas/api.py -->
+
+run video2video.py for re-texture a video.
+
+`python video2video.py stablediffusion/configs/stable-diffusion/v2-midas-inference.yaml weights/512-depth-ema.ckpt`
