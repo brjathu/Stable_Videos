@@ -8,8 +8,7 @@ __pycache__/
 
 # user specific
 _BACKUP/
-dreams/
-imagic/
+out/
 imagic_stable_diffusion/
 
 # Distribution / packaging
