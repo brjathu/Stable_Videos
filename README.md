@@ -16,7 +16,7 @@
 
 `curl -LJ https://github.com/isl-org/DPT/releases/download/1_0/dpt_large-midas-2f21e586.pt --create-dirs -o weights/midas_models/dpt_large-midas-2f21e586.pt`
 
-`wget https://huggingface.co/stabilityai/stable-diffusion-2-depth/blob/main/512-depth-ema.ckpt`
+`wget https://huggingface.co/stabilityai/stable-diffusion-2-depth/resolve/main/512-depth-ema.ckpt`
 
 `mv 512-depth-ema.ckpt weights/512-depth-ema.ckpt`
 
