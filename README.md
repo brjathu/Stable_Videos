@@ -20,7 +20,9 @@
 
 `mv 512-depth-ema.ckpt weights/512-depth-ema.ckpt`
 
-`export PYTHONPATH="${PYTHONPATH}:/home/jathu/Diffusion/Stable_Videos/stablediffusion"`
+`git clone https://github.com/Stability-AI/stablediffusion.git`
+
+`export PYTHONPATH="${PYTHONPATH}:./stablediffusion"`
 
 
 point to correct midas path
